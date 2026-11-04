@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Token History</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav class="topbar">
+    <div class="brand">Smart Queue</div>
+    <div class="nav-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/token">Generate Token</a>
+        <a href="/queue">Queue Management</a>
+        <a href="/history" class="active">Token History</a>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</nav>
+
+<div class="page-container">
+    <h1>Token History</h1>
+
+    <div class="panel">
+        <table>
+            <thead>
+            <tr>
+                <th>Token</th>
+                <th>Customer</th>
+                <th>Service</th>
+                <th>Status</th>
+                <th>Issued At</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${tokenHistory == null or tokenHistory.isEmpty()}">
+                <td colspan="5">No tokens generated yet.</td>
+            </tr>
+            <tr th:each="token : ${tokenHistory}">
+                <td th:text="${token.tokenNumber}">A-001</td>
+                <td th:text="${token.customerName}">Customer</td>
+                <td th:text="${token.serviceType}">General</td>
+                <td th:text="${token.status}">WAITING</td>
+                <td th:text="${#dates.format(token.createdAt, 'dd MMM yyyy, HH:mm')}">Date</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

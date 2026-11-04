@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: smart-queue-system
+    env: java
+    plan: free
+    buildCommand: "mvn clean package -DskipTests"
+    startCommand: "java -jar target/smart-queue-management-system-0.0.1-SNAPSHOT.jar"
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: DB_URL
+        fromDatabase:
+          name: smart-queue-db
+          property: connectionString
+      - key: DB_USERNAME
+        fromDatabase:
+          name: smart-queue-db
+          property: username
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: smart-queue-db
+          property: password
+      - key: APP_ADMIN_USERNAME
+        value: admin
+      - key: APP_ADMIN_PASSWORD
+        generateValue: true
+
+databases:
+  - name: smart-queue-db
+    databaseName: smart_queue
+    user: smartqueue
+    plan: free

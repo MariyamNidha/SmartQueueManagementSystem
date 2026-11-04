@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav class="topbar">
+    <div class="brand">Smart Queue</div>
+    <div class="nav-links">
+        <a href="/dashboard" class="active">Dashboard</a>
+        <a href="/token">Generate Token</a>
+        <a href="/queue">Queue Management</a>
+        <a href="/history">Token History</a>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</nav>
+
+<div class="page-container">
+    <h1>Service Desk Dashboard</h1>
+
+    <div class="stats-grid">
+        <div class="stat-card accent-blue">
+            <span>Total Tokens</span>
+            <strong th:text="${totalTokens}">0</strong>
+        </div>
+        <div class="stat-card accent-orange">
+            <span>Waiting</span>
+            <strong th:text="${waitingTokens}">0</strong>
+        </div>
+        <div class="stat-card accent-green">
+            <span>Served</span>
+            <strong th:text="${servedTokens}">0</strong>
+        </div>
+    </div>
+
+    <div class="panel-grid">
+        <div class="panel">
+            <h2>Current Queue</h2>
+            <div th:if="${currentToken != null}">
+                <p class="big-label" th:text="${currentToken.tokenNumber}">A-001</p>
+                <p th:text="${currentToken.customerName}">Customer Name</p>
+            </div>
+            <div th:if="${currentToken == null}">
+                <p>No active token currently waiting.</p>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Waiting List</h2>
+            <ul class="list-box" th:if="${waitingList != null and !waitingList.isEmpty()}">
+                <li th:each="token : ${waitingList}">
+                    <span th:text="${token.tokenNumber}">A-001</span>
+                    <span th:text="${token.customerName}">Customer</span>
+                </li>
+            </ul>
+            <p th:if="${waitingList == null or waitingList.isEmpty()}">No waiting customers.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

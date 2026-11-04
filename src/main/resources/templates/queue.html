@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Queue Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav class="topbar">
+    <div class="brand">Smart Queue</div>
+    <div class="nav-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/token">Generate Token</a>
+        <a href="/queue" class="active">Queue Management</a>
+        <a href="/history">Token History</a>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</nav>
+
+<div class="page-container">
+    <h1>Queue Management</h1>
+
+    <div th:if="${successMessage}" class="alert success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert danger" th:text="${errorMessage}"></div>
+
+    <div class="panel-grid">
+        <div class="panel">
+            <h2>Now Serving</h2>
+            <div th:if="${currentToken != null}">
+                <p class="big-label" th:text="${currentToken.tokenNumber}">A-001</p>
+                <p th:text="${currentToken.customerName}">Customer Name</p>
+            </div>
+            <div th:if="${currentToken == null}">
+                <p>No customers currently being served.</p>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Queue Actions</h2>
+            <form th:action="@{/queue/serve}" method="post">
+                <button type="submit">Call Next Customer</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>Waiting Customers</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Queue</th>
+                <th>Token</th>
+                <th>Name</th>
+                <th>Service</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${waitingTokens == null or waitingTokens.isEmpty()}">
+                <td colspan="4">No waiting customers</td>
+            </tr>
+            <tr th:each="token : ${waitingTokens}">
+                <td th:text="${token.queuePosition}">1</td>
+                <td th:text="${token.tokenNumber}">A-001</td>
+                <td th:text="${token.customerName}">Customer</td>
+                <td th:text="${token.serviceType}">General</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

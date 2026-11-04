@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate Token</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav class="topbar">
+    <div class="brand">Smart Queue</div>
+    <div class="nav-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/token" class="active">Generate Token</a>
+        <a href="/queue">Queue Management</a>
+        <a href="/history">Token History</a>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</nav>
+
+<div class="page-container form-page">
+    <h1>Generate New Queue Token</h1>
+
+    <div th:if="${successMessage}" class="alert success" th:text="${successMessage}"></div>
+
+    <form th:action="@{/token}" method="post" class="stack-form">
+        <label for="customerName">Customer Name</label>
+        <input id="customerName" name="customerName" type="text" placeholder="Enter customer name" required>
+
+        <label for="serviceType">Service Type</label>
+        <select id="serviceType" name="serviceType" required>
+            <option value="General">General</option>
+            <option value="Admission">Admission</option>
+            <option value="Accounts">Accounts</option>
+            <option value="Library">Library</option>
+            <option value="Exam">Exam</option>
+        </select>
+
+        <button type="submit">Generate Token</button>
+    </form>
+
+    <div class="panel small-panel" th:if="${latestToken != null}">
+        <h2>Latest Queue Number</h2>
+        <p class="big-label" th:text="${latestToken.tokenNumber}">A-001</p>
+    </div>
+</div>
+</body>
+</html>
